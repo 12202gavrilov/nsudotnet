@@ -9,5 +9,6 @@ namespace Perlin_console
     public interface IKnotValuePlacer
     {
         void Emplace(float[,] grid, int actualWidth, int widthOffset, int actualHeight, int heightOffset, int frequency);
+        int GetRandomLimit();
     }
 }

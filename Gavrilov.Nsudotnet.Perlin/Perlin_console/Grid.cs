@@ -45,16 +45,18 @@ namespace Perlin_console
 
         private void EmplaceKnotValues(IKnotValuePlacer placer)
         {
-            placer.Emplace(grid, width, width / frequency, height, height / frequency, frequency);
+            lock (placer)
+            {
+                placer.Emplace(grid, width, width / frequency, height, height / frequency, frequency);
+            }
+
             return;
         }
 
         private void InterpolateGridValues(IGridInterpolator interpolator)
         {
-            // относительные значения: [0,1-условно, т.е. единица не достигается]
-            int x = 0;
-            int y = 0;
-
+            // в интерполяции используются относительные значения: [0,1; единица не включается]
+           
             interpolator.Interpolate(grid, width, width / frequency, height, height / frequency, frequency);
             return;
         }
@@ -79,12 +81,3 @@ namespace Perlin_console
  * 
  * -1,2     0,2     1,2     2,2
 */
-
-//следует ли интерполяцию внедрять в Grid-класс в качестве метода, или же вывести его в виде интерфейса, подобно IKnotValuePlacer (проблемно по причине различного количества требуемых точек)?
-//IKnotValuePlacer - метод Next(int x,int y) - выдать следующее значение в узле.
-//коэфициенты bi считаются на каждом шаге интерполяции (на каждой новой точке) заново, как и x и y.
-//frequency - сама частота расположения узлов, или степень двойки - частоты расположения узлов?
-
-//при интерполяции в процессе инкрементации точки x (y - соответственно, тоже), будет регулярно возникать ситуация
-// попадания в существующий узел; в этом случае разумно сменять и кластер точек - на единичную величину в соответствующем направлении;
-// при ресете позиции x (смене позиции y) ресет делается только по x-направлению (y - в случае описанной выше ситуации)

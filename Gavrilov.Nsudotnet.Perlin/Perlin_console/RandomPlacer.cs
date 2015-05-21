@@ -19,6 +19,11 @@ namespace Perlin_console
             lowerAmplitude = limit;
         }
 
+        public int GetRandomLimit()
+        {
+            return lowerAmplitude;
+        }
+
         public void Emplace(float[,] grid, int actualWidth, int widthOffset, int actualHeight, int heightOffset, int frequency)
         {
             //int col = 0;

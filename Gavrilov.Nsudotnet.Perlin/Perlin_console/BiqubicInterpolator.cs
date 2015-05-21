@@ -70,6 +70,11 @@ namespace Perlin_console
 
         public void Interpolate(float[,] grid, int actualWidth, int widthOffset, int actualHeight, int heightOffset, int frequency)
         {
+            if (widthOffset == 1)
+            {
+                return;
+            }
+
             int gammaX = 0;
             int gammaY = 0;
             
@@ -83,7 +88,6 @@ namespace Perlin_console
                 if (y == (actualHeight / frequency) * (gammaY + 2))
                 {
                     gammaY += 1;
-                    //NewGamma(gammaX, widthOffset, gammaY, heightOffset, grid);
                 }
                 NewGamma(gammaX, widthOffset, gammaY, heightOffset, grid);
 
@@ -97,9 +101,6 @@ namespace Perlin_console
 
                     relevanceX = (x / (float)(actualWidth / frequency) - (gammaX + 1));
                     relevanceY = (y / (float)(actualHeight / frequency) - (gammaY + 1));
-
-                    //relevanceX = ((float)(x + 1) / (float)(actualWidth));
-                    //relevanceY = ((float)(y + 1) / (float)(actualHeight));
 
                     if (relevanceX == 0 && relevanceY == 0)
                     {
@@ -116,15 +117,12 @@ namespace Perlin_console
                         {
                             grid[x, y] += beta[step] * (float)Math.Pow(relevanceX,i) * (float)Math.Pow(relevanceY,j);
                             step++;
-
                         }
                     }
                 }
 
                 gammaX = 0;
             }
-
-            //float test = grid[325, 325];
 
             return;
         }
